@@ -600,6 +600,37 @@ tcp_print(netdissect_options *ndo,
                                 }
                                 break;
 
+		       case TCPOPT_SHOW_WND:
+		           (void)printf("wnd:");
+		           datalen = 10;
+		           LENCHECK(1);
+		           (void)printf(" ca %u", *(cp));
+		           LENCHECK(2);
+		           (void)printf(" rd %u", *(cp + 1));
+		           LENCHECK(4);
+		           (void)printf(" wd %u", EXTRACT_16BITS(cp + 2));
+		           LENCHECK(6);
+		           (void)printf(" ct %u", EXTRACT_16BITS(cp + 4));
+		           LENCHECK(8);
+		           (void)printf(" pp %u", EXTRACT_16BITS(cp + 6));
+		           LENCHECK(datalen);
+		           (void)printf(" ss %u", EXTRACT_16BITS(cp + 8));
+		           break;
+
+		       case TCPOPT_SHOW_RTT:
+		           (void)printf("rtt:");
+		           datalen = 8;
+		           LENCHECK(2);
+		           (void)printf(" rt %u", EXTRACT_16BITS(cp));
+		           LENCHECK(4);
+		           (void)printf(" vr %u", EXTRACT_16BITS(cp + 2));
+		           LENCHECK(6);
+		           (void)printf(" sr %u", EXTRACT_16BITS(cp + 4));
+		           LENCHECK(datalen);
+		           (void)printf(" rs %u", EXTRACT_16BITS(cp + 6)); 
+		           break;
+
+
                         default:
                                 datalen = len - 2;
                                 if (datalen)
